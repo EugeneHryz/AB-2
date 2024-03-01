@@ -12,10 +12,18 @@ type User {
     username: String!
     email: String
     birthDate: String!
+    images: [Image!]!
 }
 
 input UserInput {
     username: String!
     email: String
     birthDate: String!
+}
+
+type Image {
+    id: ID!
+    originalName: String!
+    size: String!
+    link: String!
 }
