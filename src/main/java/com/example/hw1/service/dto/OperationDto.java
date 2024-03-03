@@ -1,6 +1,6 @@
 package com.example.hw1.service.dto;
 
-import com.example.hw1.repository.model.Operation;
+import com.example.hw1.repository.model.OperationType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,9 @@ import java.time.Instant;
 @Setter
 public class OperationDto {
 
+    private String id;
     private String content;
-    private Operation.OperationType type;
-    private final Instant timestamp = Instant.now();
+    private Long initiatorId;
+    private Instant timestamp;
+    private OperationType type;
 }

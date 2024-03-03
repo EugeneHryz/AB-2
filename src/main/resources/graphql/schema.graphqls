@@ -1,6 +1,7 @@
 type Query {
     userById(id: ID): User
     getAllUsers: [User!]!
+    getOperationsByType(type: OperationType): [Operation!]!
 }
 
 type Mutation {
@@ -26,4 +27,19 @@ type Image {
     originalName: String!
     size: String!
     link: String!
+}
+
+enum OperationType {
+    ADD_USER_IMAGE
+    DOWNLOAD_IMAGE
+    GET_ALL_USERS
+    CREATE_NEW_USER
+    GET_USER_IMAGES_METADATA
+}
+
+type Operation {
+    id: ID!
+    content: String!
+    timestamp: String!
+    type: OperationType!
 }

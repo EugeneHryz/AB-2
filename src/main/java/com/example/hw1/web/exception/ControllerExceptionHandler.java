@@ -2,6 +2,8 @@ package com.example.hw1.web.exception;
 
 import com.example.hw1.service.exception.EntityNotFoundException;
 import com.example.hw1.service.exception.UnprocessableEntityException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,8 @@ import java.util.Map;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger(ControllerExceptionHandler.class);
+
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e) {
         return new ResponseEntity<>(createBasicResponseMessage(e), HttpStatus.NOT_FOUND);
@@ -26,10 +30,11 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(createBasicResponseMessage(e), HttpStatus.CONFLICT);
     }
 
-//    @ExceptionHandler({ Exception.class })
-//    public ResponseEntity<?> handleAnyException(Exception e) {
-//        return new ResponseEntity<>(createBasicResponseMessage(e), HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
+    @ExceptionHandler({ Exception.class })
+    public ResponseEntity<?> handleAnyException(Exception e) {
+        logger.error("Unhandled exception in controller: ", e);
+        return new ResponseEntity<>(createBasicResponseMessage(e), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleRequestObjectValidationException(MethodArgumentNotValidException e) {

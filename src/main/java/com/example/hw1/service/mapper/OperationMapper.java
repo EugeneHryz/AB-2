@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface OperationMapper {
 
-    Operation operationDtoToOperation(OperationDto dto);
+    OperationDto operationToOperationDto(Operation operation);
 
     List<OperationDto> operationListToOperationDtoList(List<Operation> operations);
 }

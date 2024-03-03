@@ -1,7 +1,7 @@
 package com.example.hw1.repository;
 
 import com.example.hw1.repository.model.Operation;
-import com.mongodb.client.model.changestream.OperationType;
+import com.example.hw1.repository.model.OperationType;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

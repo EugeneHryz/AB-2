@@ -5,10 +5,9 @@ import com.example.hw1.repository.UserRepository;
 import com.example.hw1.repository.exception.ObjectReadException;
 import com.example.hw1.repository.exception.ObjectWriteException;
 import com.example.hw1.repository.model.Image;
-import com.example.hw1.repository.model.Operation;
+import com.example.hw1.repository.model.OperationType;
 import com.example.hw1.repository.model.User;
 import com.example.hw1.service.dto.ImageDto;
-import com.example.hw1.service.dto.OperationDto;
 import com.example.hw1.service.mapper.ImageMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -48,10 +47,9 @@ public class ImageService {
                     .user(user).build();
             imageRepository.save(imageMetadata);
 
-            operationService.logOperation(new OperationDto(
+            operationService.logOperation(
                     String.format("Uploading new image: %s", imageMetadata),
-                    Operation.OperationType.WRITE)
-            );
+                    OperationType.ADD_USER_IMAGE);
 
             return imageMapper.imageToImageDto(imageMetadata);
         } catch (ObjectWriteException | IOException e) {
@@ -66,19 +64,18 @@ public class ImageService {
         } catch (ObjectReadException e) {
             throw new RuntimeException(e);
         } finally {
-            operationService.logOperation(new OperationDto(
+            operationService.logOperation(
                     String.format("Downloading user's image with link: %s", link),
-                    Operation.OperationType.READ));
+                    OperationType.DOWNLOAD_IMAGE);
         }
     }
 
     @Cacheable(value = "ImageService::getAllByUser", key = "#userId")
     public List<ImageDto> getAllByUser(Long userId) {
 
-        operationService.logOperation(new OperationDto(
+        operationService.logOperation(
                 String.format("Getting images metadata for user: %d", userId),
-                Operation.OperationType.READ)
-        );
+                OperationType.GET_USER_IMAGES_METADATA);
 
         return imageRepository.findByUserId(userId).stream()
                 .map(imageMapper::imageToImageDto)

@@ -24,6 +24,17 @@ services:
     volumes:
       - file-storage-data:/data
 
+  create-buckets:
+    image: minio/mc
+    depends_on:
+      - file-storage
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio http://file-storage:9000 root KiaRfgEmF7;
+      /usr/bin/mc mb myminio/images;
+      exit 0;
+      "
+
   redis:
     image: redis:latest
     container_name: redis

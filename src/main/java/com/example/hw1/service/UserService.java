@@ -1,9 +1,8 @@
 package com.example.hw1.service;
 
 import com.example.hw1.repository.UserRepository;
-import com.example.hw1.repository.model.Operation;
+import com.example.hw1.repository.model.OperationType;
 import com.example.hw1.repository.model.User;
-import com.example.hw1.service.dto.OperationDto;
 import com.example.hw1.service.dto.UserDto;
 import com.example.hw1.service.exception.EntityNotFoundException;
 import com.example.hw1.service.exception.UnprocessableEntityException;
@@ -29,10 +28,9 @@ public class UserService {
         }
         User createdUser = userRepository.save(userMapper.userDtoToUser(dto));
 
-        operationService.logOperation(new OperationDto(
+        operationService.logOperation(
                 String.format("Created new user: %s", createdUser),
-                Operation.OperationType.WRITE
-        ));
+                OperationType.CREATE_NEW_USER);
 
         return userMapper.userToUserDto(createdUser);
     }
